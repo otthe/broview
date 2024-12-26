@@ -1,15 +1,15 @@
 module Broview
     class FileScanner
-        IMAGE_EXTENSIONS = %w[.jpg .jpeg .png .gif .bmp .webp .svg]
-        AUDIO_EXTENSIONS = %w[.mp3 .wav .ogg .m4a .flac]
-        VIDEO_EXTENSIONS = %w[.mp4 .avi .mkv .mov .webm]
+      def self.get_supported_extensions
+        config = Broview::Config.load_config['default']['supported_extensions']
+        config['images'] + config['audio'] + config['video']
+      end
 
-        SUPPORTED_EXTENSIONS = IMAGE_EXTENSIONS + AUDIO_EXTENSIONS + VIDEO_EXTENSIONS
-
-        def self.get_media_from_dir(directory = Dir.pwd)
-            Dir.entries(directory).select do |file|
-                SUPPORTED_EXTENSIONS.include?(File.extname(file).downcase)
-            end
+      def self.get_media_from_dir(dir = Dir.pwd)
+        supported_extensions = get_supported_extensions
+        Dir.entries(dir).select do |file|
+          supported_extensions.include?(File.extname(file).downcase)
         end
+      end
     end
 end

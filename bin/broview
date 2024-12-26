@@ -5,7 +5,7 @@ require_relative '../lib/broview'
 
 options = {
     dir: "/home/null/Desktop/study/distributed", #Dir.pwd
-    port: 4567
+    port: Broview::Config.get(:port)
 }
 
 #sudo kill -9 `sudo lsof -t -i:9001`

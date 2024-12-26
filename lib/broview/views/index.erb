@@ -6,7 +6,7 @@
   <title>Broview - Media Viewer</title>
   <style>
     body { font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 0; }
-    img, audio, video { max-width: 90%; margin: 20px auto; display: block; border-style:solid;}
+    img, audio, video { max-width: 90%; margin: 20px auto; display: block; }
   </style>
 </head>
 <body>
@@ -15,14 +15,14 @@
     <% @media_files.each do |file| %>
       <% extension = File.extname(file).downcase %>
 
-      <% if Broview::FileScanner::IMAGE_EXTENSIONS.include?(extension) %>
+      <% if @image_extensions.include?(extension) %>
         <img src="<%= file %>" alt="<%= file %>">
-      <% elsif Broview::FileScanner::AUDIO_EXTENSIONS.include?(extension) %>
+      <% elsif @audio_extensions.include?(extension) %>
         <audio controls>
           <source src="<%= file %>" type="audio/<%= extension[1..-1] %>">
           Your browser does not support the audio element.
         </audio>
-      <% elsif Broview::FileScanner::VIDEO_EXTENSIONS.include?(extension) %>
+      <% elsif @video_extensions.include?(extension) %>
         <video controls>
           <source src="<%= file %>" type="video/<%= extension[1..-1] %>">
           Your browser does not support the video element.
