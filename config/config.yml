@@ -1,5 +1,6 @@
 default:
   port: 4567
+  base_sound_level: -23.0
   supported_extensions:
     images: [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".svg"]
     audio: [".mp3", ".wav", ".ogg", ".m4a", ".flac"]

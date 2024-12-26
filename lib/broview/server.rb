@@ -69,15 +69,40 @@ class BroviewApp < Sinatra::Base
     puts "Views folder: #{BroviewApp.views}"
     puts "Environment: #{BroviewApp.environment}"
     
+    # get '/' do
+    #   content_type 'text/html'
+
+    #   config = Broview::Config.load_config['default']['supported_extensions']
+    #   @image_extensions = config['images']
+    #   @audio_extensions = config['audio']
+    #   @video_extensions = config['video']
+
+    #   @media_files = Broview::FileScanner.get_media_from_dir(settings.root)
+    #   erb :index
+    # end
+    
     get '/' do
       content_type 'text/html'
 
-      config = Broview::Config.load_config['default']['supported_extensions']
-      @image_extensions = config['images']
-      @audio_extensions = config['audio']
-      @video_extensions = config['video']
+      #load extensions from config
+      config = Broview::Config.load_config['default']['supported_extensions'] rescue {}
+      @image_extensions = config['images'] || []
+      @audio_extensions = config['audio'] || []
+      @video_extensions = config['video'] || []
 
-      @media_files = Broview::FileScanner.get_media_from_dir(settings.root)
+      @media_files = Broview::FileScanner.get_media_from_dir(settings.root).map do |file|
+        file_path = File.join(settings.root, file)
+        sound_level = Broview::AudioAnalyzer.get_sound_level(file_path)
+
+        {
+            name: file,
+            path: file,
+            type: File.extname(file).downcase,
+            sound_level: sound_level || 0
+        }
+      end
+
+      @base_sound_level = Broview::Config.get(:base_sound_level) || -23.0
       erb :index
     end
 end
