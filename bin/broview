@@ -4,8 +4,8 @@ require 'bundler/setup'
 require_relative '../lib/broview'
 
 options = {
-    #dir: "/home/null/Desktop/study/distributed", #Dir.pwd
-    dir: "/home/null/Music",
+    dir: "/home/null/Desktop/study/distributed", #Dir.pwd
+    #dir: "/home/null/Music",
     port: Broview::Config.get(:port)
 }
 

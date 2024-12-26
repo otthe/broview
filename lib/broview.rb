@@ -3,6 +3,7 @@ require_relative 'broview/server'
 require_relative 'broview/cli_parser'
 require_relative 'broview/config'
 require_relative 'broview/audio_analyzer'
+require_relative 'broview/file_cache'
 
 require_relative 'broview/version'
 
