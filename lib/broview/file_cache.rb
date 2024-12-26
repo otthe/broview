@@ -1,5 +1,5 @@
 # FileCache contains collection of methods that are used to reduce compute-heavy calculations 
-# that FFMPEG sound level checking requires by storing and retrieveving previous calculations from the cache file.
+# that FFMPEG sound level checking requires by storing and retrieving previous calculations from the cache file.
 
 require 'json'
 require 'digest'
@@ -7,7 +7,7 @@ require 'time'
 
 module Broview
   class FileCache
-    CACHE_FILE = File.expand_path('../../config/cache.json', __dir__)
+    CACHE_FILE = File.expand_path('../../tmp/cache.json', __dir__)
 
     def self.load_cache
       return JSON.parse(File.read(CACHE_FILE)) if File.exist?(CACHE_FILE)
