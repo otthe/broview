@@ -1,3 +1,6 @@
+# FileScanner-class is used to return supported files from the program's execution directory location.
+# Supported extensions for each media types are defined in the config/config.yml
+
 module Broview
     class FileScanner
       def self.get_supported_extensions

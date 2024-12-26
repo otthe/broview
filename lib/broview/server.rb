@@ -1,3 +1,6 @@
+# Server-class launches new server session everytime the program is started, 
+# it also handles routing and kills previous sessions running on the same port.
+
 require 'sinatra'
 require 'rack/mime'
 require 'launchy'
@@ -68,18 +71,6 @@ class BroviewApp < Sinatra::Base
     puts "Public folder: #{BroviewApp.public_folder}"
     puts "Views folder: #{BroviewApp.views}"
     puts "Environment: #{BroviewApp.environment}"
-    
-    # get '/' do
-    #   content_type 'text/html'
-
-    #   config = Broview::Config.load_config['default']['supported_extensions']
-    #   @image_extensions = config['images']
-    #   @audio_extensions = config['audio']
-    #   @video_extensions = config['video']
-
-    #   @media_files = Broview::FileScanner.get_media_from_dir(settings.root)
-    #   erb :index
-    # end
     
     get '/' do
       content_type 'text/html'

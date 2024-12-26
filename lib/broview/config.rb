@@ -1,3 +1,5 @@
+# Config-class is used to read config/config.yml
+
 require 'yaml'
 
 module Broview

@@ -1,3 +1,5 @@
+# CliParser-class is used to run Broview with extra arguments
+
 require 'optparse'
 
 module Broview

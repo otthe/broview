@@ -1,3 +1,6 @@
+# FileCache contains collection of methods that are used to reduce compute-heavy calculations 
+# that FFMPEG sound level checking requires by storing and retrieveving previous calculations from the cache file.
+
 require 'json'
 require 'digest'
 require 'time'
