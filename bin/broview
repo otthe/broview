@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require_relative '../lib/broview'
+
+options = {
+    dir: "/home/null/Desktop/study/distributed", #Dir.pwd
+    port: 4567
+}
+
+#sudo kill -9 `sudo lsof -t -i:9001`
+#sudo kill -9 $(sudo lsof -t -i:9001)
+
+#"--help" is currently replaced with "-o" and "--options" because i can't figure out why sinatra/rack overwrites my custom option parser
+Broview::CliParser.parse(options, ARGV.dup)
+
+
+Broview::Server.start(options[:dir], options[:port])
