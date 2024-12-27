@@ -98,6 +98,7 @@ class BroviewApp < Sinatra::Base
     end
 
     #@base_sound_level = Broview::Config.get(:base_sound_level) || -23.0
+		@base_file_path = settings.root
     erb :index
   end
 

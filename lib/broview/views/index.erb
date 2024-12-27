@@ -6,98 +6,93 @@
   <title>Broview</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: monospace;
+      font-size: 1.1em;
       display: flex;
       margin: 0;
       padding: 0;
+      height: 100vh;
+      background: #111;
+      overflow-x: hidden;
+      margin:0;
+      padding:0;
     }
     .sidebar {
       width: 20%;
-      height: 100vh;
+      height: 100%;
       overflow-y: auto;
-      background: #f4f4f4;
+      background: #111;
       border-right: 1px solid #ccc;
       padding: 10px;
+
+      overflow: scroll;
     }
     .main-content {
       width: 80%;
-      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #222;
     }
     .media-link {
       display: block;
       margin: 10px 0;
       text-decoration: none;
-      color: #333;
+      color: orange;
     }
     .media-link:hover {
       color: #007bff;
     }
-
-    video, audio, img {
-      width: 100%;
-      max-height: 100%;
-      object-fit: cover;
-    }
     #view-container {
       width: 100%;
-      max-width: 100%;
       height: 100%;
-      max-height: 800px;
+      border: none;
     }
-    img {
-      object-fit:cover;
-    }
-
     video {
-      position: absolute; 
-      right: 0; 
-      bottom: 0;
-      min-width: 100%; 
-      min-height: 100%;
-      width: auto; 
-      height: auto; 
-      z-index: -100;
-      background-size: cover;
-      overflow: hidden;
+      object-fit: contain;
+      width: 100%; 
+      height: auto;
+      margin: 0 auto;
     }
 
-    .main-content #toolbar {
-      width: 100%;
-      height: 128px;
-      background-color: rgba(0,0,0,0.5);
-      position: fixed;
-      bottom:0px;
-      margin:0;
-      margin-left: -20px;
-      padding:0;
+    ::-webkit-scrollbar {
+      width: 0px;
+      border:none;
+      background: transparent;
+    }
 
-      display:flex;
-      justify-content: center;
-      align-items: center;
+    .sidebar ::-webkit-scrollbar {
+      width: 3px;
+      background: #111;
+    }
+
+    .sidebar ::-webkit-scrollbar-track {
+      background: #111;
+    }
+
+    .sidebar ::-webkit-scrollbar-thumb {
+      background: orange;
+    }
+    hr{
+      border-color: #111;
     }
   </style>
 </head>
 <body>
   <div class="sidebar">
-    <h1>Broview</h1>
-    <h3>Media Files</h3>
+    <h4 style="color:#fff;"><%= @base_file_path %></h4>
     <% @media_files.each do |file| %>
       <a 
         class="media-link" 
         href="/media/<%= file[:name] %>" 
-        data-volume-adjustment="<%= file[:volume_adjustment] %>" 
-        target="view-container">
+        data-volume-adjustment="<%= file[:volume_adjustment] %>">
         <%= file[:name] %>
       </a>
       <hr>
     <% end %>
   </div>
   <div class="main-content">
-    <iframe id="view-container" style="border: none;" frameborder="0" allowfullscreen></iframe>
-    <div id="toolbar">
-      <button>previous</button>
-      <button>next</button>
-    </div>
+    <iframe id="view-container"></iframe>
   </div>
 
   <script>
@@ -111,68 +106,23 @@
           const filePath = link.getAttribute("href");
           const volumeAdjustment = parseFloat(link.dataset.volumeAdjustment);
 
-          // Load the media file into the iframe
           iframe.src = filePath;
 
-          // Adjust volume for audio or video inside the iframe
           iframe.onload = () => {
-            const doc = iframe.contentDocument || iframe.contentWindow.document;
-            const audioElement = doc.querySelector("audio");
-            const videoElement = doc.querySelector("video");
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            const mediaElement = iframeDoc.querySelector("video, img");
 
-            if (audioElement) {
-              audioElement.volume = volumeAdjustment;
-            }
-            if (videoElement) {
-              videoElement.volume = volumeAdjustment;
+            if (mediaElement) {
+              mediaElement.style.width = "100%";
+              mediaElement.style.height = "100%";
+              mediaElement.style.objectFit = "contain";
+              if (mediaElement.tagName === "VIDEO") {
+                mediaElement.volume = volumeAdjustment;
+              }
             }
           };
+
         });
-      });
-    });
-
-    function fullBleed(containerWidth, containerHeight, mediaWidth, mediaHeight) {
-      const ratio = mediaHeight / mediaWidth;
-
-      let newWidth = containerWidth;
-      let newHeight = containerWidth * ratio;
-
-      if (newHeight < containerHeight) {
-        newHeight = containerHeight;
-        newWidth = containerHeight / ratio;
-      }
-
-      return {
-        width: newWidth,
-        height: newHeight,
-      };
-    }
-    function scaleMediaElements() {
-      const mediaElements = document.querySelectorAll('video, audio');
-      
-      mediaElements.forEach((media) => {
-        const parent = media.parentElement;
-        const containerWidth = parent.offsetWidth;
-        const containerHeight = parent.offsetHeight;
-        const mediaWidth = media.videoWidth || media.clientWidth;
-        const mediaHeight = media.videoHeight || media.clientHeight;
-
-        // Calculate new dimensions
-        const newSize = fullBleed(containerWidth, containerHeight, mediaWidth, mediaHeight);
-
-        // Apply new dimensions
-        media.style.width = `${newSize.width}px`;
-        media.style.height = `${newSize.height}px`;
-        media.style.position = 'absolute'; // Optional, for centering
-        media.style.left = `${(containerWidth - newSize.width) / 2}px`; // Center horizontally
-        media.style.top = `${(containerHeight - newSize.height) / 2}px`; // Center vertically
-      });
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-      scaleMediaElements();
-
-      window.addEventListener('resize', () => {
-        scaleMediaElements();
       });
     });
   </script>
