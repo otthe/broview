@@ -64,7 +64,7 @@ export PATH=$PATH:/path/to/broview/bin
 ```
 Whenever you run __./broview__, new browser tab should popup with the media files from the same directory you ran Broview on the cli.
 <br><b>Please note that if the directory contains large amounts of media files, it might take some time for the server to launch on the first time.</b>
-<br><b>This is due to Ffmpeg processing the audio and caching the volume levels.</b>
+<b>This is due to Ffmpeg processing the audio and caching the volume levels.</b>
 
 
 ---
