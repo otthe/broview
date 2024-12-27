@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Broview</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      margin: 0;
+      padding: 0;
+    }
+    .sidebar {
+      width: 20%;
+      height: 100vh;
+      overflow-y: auto;
+      background: #f4f4f4;
+      border-right: 1px solid #ccc;
+      padding: 10px;
+    }
+    .main-content {
+      width: 80%;
+      padding: 20px;
+    }
+    .media-link {
+      display: block;
+      margin: 10px 0;
+      text-decoration: none;
+      color: #333;
+    }
+    .media-link:hover {
+      color: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h3>Media Files</h3>
+    <% @media_files.each do |file| %>
+      <a 
+        class="media-link" 
+        href="/media/<%= file[:name] %>" 
+        data-volume-adjustment="<%= file[:volume_adjustment] %>" 
+        target="view-container">
+        <%= file[:name] %>
+      </a>
+    <% end %>
+  </div>
+  <div class="main-content">
+    <iframe id="view-container" width="100%" height="600px" style="border: none;"></iframe>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = document.querySelectorAll(".media-link");
+      const iframe = document.getElementById("view-container");
+
+      links.forEach(link => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          const filePath = link.getAttribute("href");
+          const volumeAdjustment = parseFloat(link.dataset.volumeAdjustment);
+
+          // Load the media file into the iframe
+          iframe.src = filePath;
+
+          // Adjust volume for audio or video inside the iframe
+          iframe.onload = () => {
+            const doc = iframe.contentDocument || iframe.contentWindow.document;
+            const audioElement = doc.querySelector("audio");
+            const videoElement = doc.querySelector("video");
+
+            if (audioElement) {
+              audioElement.volume = volumeAdjustment;
+            }
+            if (videoElement) {
+              videoElement.volume = volumeAdjustment;
+            }
+          };
+        });
+      });
+    });
+  </script>
+</body>
+</html>

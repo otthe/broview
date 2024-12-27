@@ -1,8 +1,10 @@
-require 'rspec'
-require_relative '../lib/broview/server'
-require_relative '../lib/broview/config'
+# frozen_string_literal: true
 
-#this test will fail unless server is running
+require "rspec"
+require_relative "../lib/broview/server"
+require_relative "../lib/broview/config"
+
+# this test will fail unless server is running
 # RSpec.describe Broview::Server do
 #   describe "#start" do
 #     it "checks if server is running on specific port" do

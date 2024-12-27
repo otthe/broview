@@ -1,19 +1,20 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'bundler/setup'
 require_relative '../lib/broview'
 
 options = {
-    dir: "/home/null/Desktop/study/distributed", #Dir.pwd
-    #dir: "/home/null/Music",
-    #dir: "/home/null/Videos",
+    # dir: "/home/null/Desktop/study/distributed", #Dir.pwd
+    dir: "/home/null/Music",
+    #dir: '/home/null/Videos',
     port: Broview::Config.get(:port)
 }
 
-#sudo kill -9 `sudo lsof -t -i:9001`
-#sudo kill -9 $(sudo lsof -t -i:9001)
+# sudo kill -9 `sudo lsof -t -i:9001`
+# sudo kill -9 $(sudo lsof -t -i:9001)
 
-#"--help" is currently replaced with "-o" and "--options" because i can't figure out why sinatra/rack overwrites the custom opt parser
+# "--help" is currently replaced with "-o" and "--options" because i can't figure out why sinatra/rack overwrites the custom opt parser
 Broview::CliParser.parse(options, ARGV.dup)
 puts "If you are opening this folder for the first time, it might take some time to start the server. \n FFMPEG is caching the sound levels..."
 Broview::Server.start(options[:dir], options[:port])
