@@ -77,10 +77,12 @@
       border-color: #111;
     }
   </style>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
 </head>
 <body>
-  <div class="sidebar">
-    <h4 style="color:#fff;"><%= @base_file_path %></h4>
+  <div class="sidebar">               
+    <a class="github-button" href="https://github.com/otthe/broview" data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star otthe/broview on GitHub">Star</a>
+    <h4 style="color:#fff;"><%= @base_file_path || "Media files" %></h4>
     <% @media_files.each do |file| %>
       <a 
         class="media-link" 

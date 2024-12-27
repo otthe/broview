@@ -4,3 +4,4 @@ config/cache.json
 bin/cache.json
 tmp/cache.json
 sandbox.rb
+README2.md
