@@ -31,7 +31,7 @@ module Broview
     end
 
     def self.adjust_sound_level(base_sound_level, sound_level)
-      (10**((base_sound_level - sound_level) / 20.0)).clamp(0, 1)
+      (10 ** ((base_sound_level - sound_level) / 20.0)).clamp(0, 1)
     end
   end
 end

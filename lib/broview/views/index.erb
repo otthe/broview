@@ -32,10 +32,54 @@
     .media-link:hover {
       color: #007bff;
     }
+
+    video, audio, img {
+      width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+    }
+    #view-container {
+      width: 100%;
+      max-width: 100%;
+      height: 100%;
+      max-height: 800px;
+    }
+    img {
+      object-fit:cover;
+    }
+
+    video {
+      position: absolute; 
+      right: 0; 
+      bottom: 0;
+      min-width: 100%; 
+      min-height: 100%;
+      width: auto; 
+      height: auto; 
+      z-index: -100;
+      background-size: cover;
+      overflow: hidden;
+    }
+
+    .main-content #toolbar {
+      width: 100%;
+      height: 128px;
+      background-color: rgba(0,0,0,0.5);
+      position: fixed;
+      bottom:0px;
+      margin:0;
+      margin-left: -20px;
+      padding:0;
+
+      display:flex;
+      justify-content: center;
+      align-items: center;
+    }
   </style>
 </head>
 <body>
   <div class="sidebar">
+    <h1>Broview</h1>
     <h3>Media Files</h3>
     <% @media_files.each do |file| %>
       <a 
@@ -45,10 +89,15 @@
         target="view-container">
         <%= file[:name] %>
       </a>
+      <hr>
     <% end %>
   </div>
   <div class="main-content">
-    <iframe id="view-container" width="100%" height="600px" style="border: none;"></iframe>
+    <iframe id="view-container" style="border: none;" frameborder="0" allowfullscreen></iframe>
+    <div id="toolbar">
+      <button>previous</button>
+      <button>next</button>
+    </div>
   </div>
 
   <script>
@@ -79,6 +128,51 @@
             }
           };
         });
+      });
+    });
+
+    function fullBleed(containerWidth, containerHeight, mediaWidth, mediaHeight) {
+      const ratio = mediaHeight / mediaWidth;
+
+      let newWidth = containerWidth;
+      let newHeight = containerWidth * ratio;
+
+      if (newHeight < containerHeight) {
+        newHeight = containerHeight;
+        newWidth = containerHeight / ratio;
+      }
+
+      return {
+        width: newWidth,
+        height: newHeight,
+      };
+    }
+    function scaleMediaElements() {
+      const mediaElements = document.querySelectorAll('video, audio');
+      
+      mediaElements.forEach((media) => {
+        const parent = media.parentElement;
+        const containerWidth = parent.offsetWidth;
+        const containerHeight = parent.offsetHeight;
+        const mediaWidth = media.videoWidth || media.clientWidth;
+        const mediaHeight = media.videoHeight || media.clientHeight;
+
+        // Calculate new dimensions
+        const newSize = fullBleed(containerWidth, containerHeight, mediaWidth, mediaHeight);
+
+        // Apply new dimensions
+        media.style.width = `${newSize.width}px`;
+        media.style.height = `${newSize.height}px`;
+        media.style.position = 'absolute'; // Optional, for centering
+        media.style.left = `${(containerWidth - newSize.width) / 2}px`; // Center horizontally
+        media.style.top = `${(containerHeight - newSize.height) / 2}px`; // Center vertically
+      });
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      scaleMediaElements();
+
+      window.addEventListener('resize', () => {
+        scaleMediaElements();
       });
     });
   </script>

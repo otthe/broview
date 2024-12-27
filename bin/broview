@@ -6,8 +6,8 @@ require_relative '../lib/broview'
 
 options = {
     # dir: "/home/null/Desktop/study/distributed", #Dir.pwd
-    dir: "/home/null/Music",
-    #dir: '/home/null/Videos',
+    #dir: "/home/null/Music",
+    dir: '/home/null/Videos',
     port: Broview::Config.get(:port)
 }
 

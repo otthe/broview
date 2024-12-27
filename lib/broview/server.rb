@@ -72,28 +72,28 @@ class BroviewApp < Sinatra::Base
   puts "Views folder: #{BroviewApp.views}"
   puts "Environment: #{BroviewApp.environment}"
 
-  get '/' do
-    content_type 'text/html'
+  get "/" do
+    content_type "text/html"
 
     #load extensions from config
-    config = Broview::Config.load_config['default']['supported_extensions'] rescue {}
-    @image_extensions = config['images'] || []
-    @audio_extensions = config['audio'] || []
-    @video_extensions = config['video'] || []
+    config = Broview::Config.load_config["default"]["supported_extensions"] rescue {}
+    @image_extensions = config["images"] || []
+    @audio_extensions = config["audio"] || []
+    @video_extensions = config["video"] || []
 
     @media_files = Broview::FileScanner.get_media_from_dir(settings.root).map do |file|
-    	file_path = File.join(settings.root, file)
+      file_path = File.join(settings.root, file)
       sound_level = Broview::AudioAnalyzer.get_sound_level(file_path) || 0
 
-			base_sound_level = Broview::Config.get(:base_sound_level) || -23.0
-			volume_adjustment = Broview::AudioAnalyzer.adjust_sound_level(base_sound_level, sound_level)
+      base_sound_level = Broview::Config.get(:base_sound_level) || -23.0
+      volume_adjustment = Broview::AudioAnalyzer.adjust_sound_level(base_sound_level, sound_level)
 
       {
         name: file,
         path: file,
         type: File.extname(file).downcase,
         sound_level: sound_level || 0,
-				volume_adjustment: volume_adjustment
+        volume_adjustment: volume_adjustment,
       }
     end
 
@@ -101,11 +101,11 @@ class BroviewApp < Sinatra::Base
     erb :index
   end
 
-	get '/media/:file' do |file|
-		file_path = File.join(settings.root, file)
-		halt 404, "File not found" unless File.exist?(file_path)
-		
-		content_type Rack::Mime.mime_type(File.extname(file_path))
-		send_file file_path
-	end
+  get "/media/:file" do |file|
+    file_path = File.join(settings.root, file)
+    halt 404, "File not found" unless File.exist?(file_path)
+
+    content_type Rack::Mime.mime_type(File.extname(file_path))
+    send_file file_path
+  end
 end
