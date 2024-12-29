@@ -33,16 +33,7 @@ module Broview
           puts opts
           exit
         end
-
-        # this doesnt work correctly because sinatra/rack overwrites them with it's own "--help" arg
-        opts.on("-h", "--help", "Prints this help message") do
-          puts opts
-          exit
-        end
-      end.parse!(args) # explicitly parse only Broview arguments (by default rack and sinatra overwrites these options)
-
-      # clear any remaining arguments to prevent sinatra/rack from processing them!
-      # ARGV.clear
+      end.parse!(args)
     end
   end
 end
