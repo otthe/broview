@@ -15,14 +15,15 @@ module Broview
 
       BroviewApp.set :root, dir
       BroviewApp.set :public_folder, dir
-      BroviewApp.set :views, File.expand_path("views", __dir__)
+      # BroviewApp.set :views, File.expand_path("views", __dir__)
+      BroviewApp.set :views, File.expand_path("../../themes", __dir__)
       BroviewApp.set :port, port
 
       server_thread = Thread.new { BroviewApp.run! }
 
       wait_for_server(port)
 
-      Launchy.open("http://localhost:#{port}")
+      Launchy.open("http://#{Broview::Config.get(:host) || "localhost"}:#{port}")
 
       server_thread.join
     end
@@ -61,7 +62,8 @@ end
 
 class BroviewApp < Sinatra::Base
   set :public_folder, Proc.new { settings.root }
-  set :views, File.expand_path("views", __dir__)
+  #set :views, File.expand_path("views", __dir__)
+  set :views, File.expand_path("../../themes", __dir__)
 
   before do
     content_type Rack::Mime.mime_type(File.extname(request.path_info))
@@ -97,9 +99,8 @@ class BroviewApp < Sinatra::Base
       }
     end
 
-    #@base_sound_level = Broview::Config.get(:base_sound_level) || -23.0
-		@base_file_path = settings.root
-    erb :index
+    @base_file_path = settings.root
+    erb :"#{Broview::Config.get(:theme) || "default"}"
   end
 
   get "/media/:file" do |file|

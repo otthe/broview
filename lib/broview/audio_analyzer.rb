@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # AudioAnalyzer-class uses FFMPEG to find out the sound level of video/audio -file.
-# This information is later used on client-side to adjust sound level to user defined base_sound_level.
+# This information is later used to adjust sound level to user defined base_sound_level.
 
 require "open3"
 require "etc"

@@ -1,8 +1,8 @@
 # Broview - Browser-based media viewer
 
-**Broview** is simple browser-based media viewer that uses FFMmpeg to adjust volume for each individual video and audio files.
-You can easily modify the look and functionality of the viewer with the help of HTML, CSS, JS and ERB.
-This application is perfect for those who:
+**Broview** is simple browser-based media viewer that uses FFMmpeg to adjust volume for local video and audio files.
+You can easily write your own functionality and style for the viewer with some basic webdev knowledge.
+This application is for those who:
 - Are tired of inconsistent audio levels blasting their ears.
 - Want a customizable media player.
 - Need a quick and easy way to share media files via a reverse proxy or local network
@@ -11,10 +11,7 @@ This application is perfect for those who:
 ---
 
 ## Prerequisities
-Before setting up Broview, ensure you have the following installed:
-
 - [FFmpeg](https://ffmpeg.org/)
-  - FFmpeg is required to analyze media files and normalize audio levels.
   
 - Ruby (version >= 3.3.0)
 
@@ -68,4 +65,4 @@ Whenever you run __./broview__, new browser tab should popup with the media file
 
 
 ---
-## Known Issues and Limitations
+## Things to consider
