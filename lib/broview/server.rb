@@ -19,7 +19,7 @@ module Broview
       BroviewApp.set :views, File.expand_path("../../themes", __dir__)
       BroviewApp.set :port, port
 
-      server_thread = Thread.new { BroviewApp.run! }
+      server_thread = Thread.new { BroviewApp.run! bind: Broview::Config.get(:host), port: Broview::Config.get(:port) }
 
       wait_for_server(port)
 

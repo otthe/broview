@@ -1,6 +1,6 @@
 default:
-  host: "localhost"
-  port: 4567
+  host: "0.0.0.0"
+  port: 8080
   base_sound_level: -23.0
   supported_extensions:
     images: [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".svg", ".avif"]
